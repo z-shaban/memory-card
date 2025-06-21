@@ -1,16 +1,8 @@
 
 import { Card } from "./card"
 import { useState, useEffect } from "react"
-export function CardBoard(){
-    /*const mockData = [
-        {name: "alfa", img:"alfa.jpg"},
-        {name: "fareeda", img:"fareeda.jpg"},
-        {name: "fareed", img:"fareed.jpg"},
-        {name: "ihsaan", img:"ihsaan.jpg"},
-        {name: "aliyah", img:"aliyah.jpg"},
-        {name: "adiza", img:"adiza.jpg"}
-    ]*/
-
+export function CardBoard({score , setScore}){
+    
     const [gifs, setGif] = useState([])
 
     useEffect(()=>{
@@ -25,9 +17,20 @@ export function CardBoard(){
             alt: gif.alt_text
         }))
         setGif(myGifs)
+        
       }
         )
+    .catch(err => console.error(err));
     }, [])
+
+    const shuffleCards = (array) => {
+  return [...array].sort(()=> Math.random() - 0.5)
+    }
+
+    
+   const handleClick = ()=>{
+    setGif(shuffleCards(gifs))
+   }
 
    
     
@@ -36,7 +39,11 @@ export function CardBoard(){
         <>
         <div className="card-Board">
             {gifs.map((gif)=>(
-                <Card key={gif.id} card={gif}/>
+                <Card 
+                onClick = {handleClick}
+                key={gif.id} 
+                card={gif}
+                />
             ))}
         </div>
         </>

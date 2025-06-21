@@ -4,7 +4,7 @@ import './App.css'
 import { useState } from 'react'
 
 function App() {
-const [score, setScore] = useState([0 ,3,1])
+const [score, setScore] = useState([0])
 
 
  return <>
@@ -12,7 +12,7 @@ const [score, setScore] = useState([0 ,3,1])
  <p>Get points by clicking on an Image</p>
  <p>Game Over if you click an Image Twice</p>
  <Scores score={score} />
- <CardBoard />
+ <CardBoard  score={score} setScore={setScore} />
  </>
 }
 
