@@ -14,7 +14,7 @@ export function CardBoard(){
     const [gifs, setGif] = useState([])
 
     useEffect(()=>{
-      fetch('https://api.giphy.com/v1/gifs/search?q=dogs&limit=10&api_key=HbgCUM3NGlo409VPr8b9Ze5PTP5Z21tr')
+      fetch('https://api.giphy.com/v1/gifs/search?q=cats&limit=10&api_key=HbgCUM3NGlo409VPr8b9Ze5PTP5Z21tr')
       .then(response => response.json())
       /*set gif in state*/
       .then(gifs => {
