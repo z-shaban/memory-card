@@ -1,11 +1,12 @@
 
 import { Card } from "./card"
 import { useState, useEffect } from "react"
-export function CardBoard({score , setScore}){
+export function CardBoard({currentScore, setCurrentScore, bestScore, setBestScore}){
     
     const [gifs, setGif] = useState([])
+    const [loading, setLoading] = useState(true)
    
-
+    /*fetch cards from api*/
     useEffect(()=>{
       fetch('https://api.giphy.com/v1/gifs/search?q=cats&limit=10&api_key=HbgCUM3NGlo409VPr8b9Ze5PTP5Z21tr')
       .then(response => response.json())
@@ -18,31 +19,51 @@ export function CardBoard({score , setScore}){
             alt: gif.alt_text,
             clicked: false
         }))
-        setGif(myGifs)
-        
+        setGif(shuffleCards(myGifs))
+        setLoading(false)
       }
         )
     .catch(err => console.error(err));
     }, [])
 
+   
+    
     const shuffleCards = (array) => {
   return [...array].sort(()=> Math.random() - 0.5)
     }
 
     
    const handleClick = (gif)=>{
-   if (gif.clicked == false){
-   let currentScore = score.at(-1);
-   currentScore++
-   setScore(prevScore=>[...prevScore, currentScore])
-   gif.clicked = true
-   } else if(gif.clicked == true){
-    let currentScore = 0
-    setScore(prevScore=>[...prevScore, currentScore])
-    gif.clicked = false
-   }
 
-    setGif(shuffleCards(gifs))
+   if (gif.clicked == false){
+   
+   setCurrentScore(score => score + 1)
+   /* change clicked status to true*/
+   setGif(prevGif => shuffleCards(
+    prevGif.map(g =>{
+      if(g.id === gif.id){
+        return {...g, clicked : true};
+      }else{
+        return g
+      }
+    } )
+   ) 
+    )
+   } else if(gif.clicked === true){
+    
+    setBestScore(prevBestScore=> Math.max(prevBestScore, currentScore))
+    /*reset current score*/
+    setCurrentScore(0)
+    /*reset clicked status of all cards to false*/
+    setGif(prevGif => shuffleCards(
+      prevGif.map(g =>({
+      ...g, 
+      clicked:false
+    }) )
+    ) 
+    )
+   }
+    
    }
 
    
@@ -51,7 +72,8 @@ export function CardBoard({score , setScore}){
     return(
         <>
         <div className="card-Board">
-            {gifs.map((gif)=>(
+            {loading ? <p>Loading...</p>: 
+            gifs.map((gif)=>(
                 <Card 
                 onClick = {()=> handleClick(gif)}
                 key={gif.id} 
