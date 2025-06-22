@@ -1,7 +1,7 @@
 
 import { Card } from "./card"
 import { useState, useEffect } from "react"
-export function CardBoard({currentScore, setCurrentScore, bestScore, setBestScore}){
+export function CardBoard({currentScore, setCurrentScore, setBestScore}){
     
     const [gifs, setGif] = useState([])
     const [loading, setLoading] = useState(true)
